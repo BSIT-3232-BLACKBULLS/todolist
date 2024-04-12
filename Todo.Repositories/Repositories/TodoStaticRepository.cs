@@ -1,4 +1,8 @@
-﻿using TodoList.Domain;
+﻿using System;
+using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
+using TodoList.Domain;
 using Todolist.Models;
 using TodoList.Domain.Interface;
 
@@ -7,10 +11,11 @@ namespace Todolist.Repositories
     public class TodoStaticRepository : ITodoRepository
     {
         private static List<ToDo> todoList;
-        public TodoStaticRepository()
+
+        static TodoStaticRepository()
         {
-            todoList =
-            [
+            todoList = new List<ToDo>
+            {
                 new ToDo
                 {
                     Category = Category.Adventure,
@@ -19,17 +24,18 @@ namespace Todolist.Repositories
                     Id = 1,
                     Status = Status.New,
                 },
-            ];
+            };
         }
+
         public ToDo Add(ToDo toDo)
         {
             todoList.Add(toDo);
             return toDo;
         }
 
-        public async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+        public Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
         {
-            return 0;
+            return Task.FromResult(0);
         }
 
         public IEnumerable<ToDo> GetAll()
